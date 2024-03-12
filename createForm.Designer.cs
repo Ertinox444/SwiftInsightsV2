@@ -1,6 +1,6 @@
 ﻿namespace SwiftInsightsV2
 {
-    partial class menuForm
+    partial class createForm
     {
         /// <summary>
         /// Required designer variable.
@@ -34,22 +34,22 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 52.2F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(862, 362);
+            label1.Font = new Font("Segoe UI", 52F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.Location = new Point(861, 439);
             label1.Name = "label1";
             label1.Size = new Size(296, 116);
             label1.TabIndex = 0;
-            label1.Text = "MENU";
+            label1.Text = "Create";
             // 
-            // menuForm
+            // createForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1661, 1016);
             Controls.Add(label1);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "menuForm";
-            Text = "menuForm";
+            Name = "createForm";
+            Text = "createForm";
             ResumeLayout(false);
             PerformLayout();
         }
