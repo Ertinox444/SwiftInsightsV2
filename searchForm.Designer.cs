@@ -65,6 +65,7 @@
             tb_Search.PlaceholderText = "Entrer une information...";
             tb_Search.Size = new Size(476, 32);
             tb_Search.TabIndex = 1;
+            tb_Search.KeyPress += tb_Search_KeyPress_1;
             // 
             // panel1
             // 

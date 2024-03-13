@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainForm));
             main_PNL = new Panel();
             flp_Main = new FlowLayoutPanel();
             mainPic_ToMenu = new PictureBox();
@@ -109,6 +110,7 @@
             btn_Logout.SizeMode = PictureBoxSizeMode.Zoom;
             btn_Logout.TabIndex = 0;
             btn_Logout.TabStop = false;
+            btn_Logout.Click += btn_Logout_Click;
             // 
             // btn_Quit
             // 
@@ -130,9 +132,10 @@
             ClientSize = new Size(1924, 1055);
             Controls.Add(flp_Main);
             Controls.Add(main_PNL);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "mainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "SwiftInsights";
+            Text = "Swift Insights";
             WindowState = FormWindowState.Maximized;
             flp_Main.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)mainPic_ToMenu).EndInit();

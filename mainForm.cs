@@ -46,5 +46,17 @@ namespace SwiftInsightsV2
             menuForm MFM = new menuForm();
             SF.openChildForm(MFM);
         }
+
+        private void btn_Logout_Click(object sender, EventArgs e)
+        {
+            // Ferme la forme actuelle
+            this.Close();
+
+            // Redémarre l'application pour afficher la forme de connexion
+            Application.Restart();
+
+
+
+        }
     }
 }

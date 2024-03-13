@@ -91,7 +91,7 @@ namespace SwiftInsightsV2
             advDGV_Search.Columns[2].HeaderText = "Code APE";
             advDGV_Search.Columns[3].HeaderText = "Activité Principale";
             advDGV_Search.Columns[4].HeaderText = "Code Postal";
-        
+
 
             // Mettre à jour le numéro de page affiché
             tb_PageNumber.Text = currentPage.ToString();
@@ -99,10 +99,7 @@ namespace SwiftInsightsV2
 
         private async void tb_Search_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (char)Keys.Enter)
-            {
-                pb_Search_Click(sender, e);
-            }
+           
         }
 
         private void CalculatePages()
@@ -112,6 +109,14 @@ namespace SwiftInsightsV2
             tb_NumberOfResult.Text = totalResults.ToString();
             currentPage = 1; // Réinitialiser la page courante à la première page
             tb_PageNumber.Text = currentPage.ToString();
+        }
+
+        private async void tb_Search_KeyPress_1(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                pb_Search_Click(sender, e);
+            }
         }
     }
 }
