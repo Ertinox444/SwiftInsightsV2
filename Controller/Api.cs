@@ -43,12 +43,12 @@ namespace SwiftInsightsV2.Controller
             }
         }
 
-        public async Task<JArray> SearchEnterpriseBySiren(string siren)
+        public async Task<JArray> SearchEnterpriseBySiren(string siret)
         {
-            if (string.IsNullOrWhiteSpace(siren))
-                throw new ArgumentException("Le numéro de SIREN ne peut pas être vide.");
+            if (string.IsNullOrWhiteSpace(siret))
+                throw new ArgumentException("Le terme de recherche ne peut pas être vide.");
 
-            string url = $"https://api.societe.com/api/v1/entreprise/{siren}"+"/etablissements?token="+_token;
+            string url = "https://api.societe.com/api/v1/entreprise/"+siret+"/etablissements?token=" + _token;
 
             using (var client = new HttpClient())
             {
@@ -61,7 +61,7 @@ namespace SwiftInsightsV2.Controller
                     var content = await response.Content.ReadAsStringAsync();
                     dynamic jsonObject = JsonConvert.DeserializeObject(content);
 
-                    return jsonObject.data.results;
+                    return jsonObject.data.etablissements;
                 }
                 else
                 {

@@ -4,15 +4,19 @@ using SwiftInsightsV2.Class;
 using SwiftInsightsV2.Controller;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SwiftInsightsV2
 {
     public partial class searchForm : Form
     {
         private List<Entreprise> allEnterprises; // Variable pour stocker toutes les entreprises
+        private List<EntrepriseEtablissement> allEnterprisesEtab;
         private int currentPage = 1; // Page actuelle
         private int pageSize = 20; // Nombre d'entreprises par page
         private int totalResults; // Nombre total de résultats
@@ -29,17 +33,45 @@ namespace SwiftInsightsV2
             {
                 Api api = new Api();
 
-                try
+                if ((tb_Search.Text.Length == 14 || tb_Search.Text.Length == 9) && tb_Search.Text.All(char.IsDigit))
                 {
-                    JArray results = await api.SearchEnterprise(tb_Search.Text);
-                    allEnterprises = JsonConvert.DeserializeObject<List<Entreprise>>(results.ToString());
-                    totalResults = allEnterprises.Count;
-                    CalculatePages();
-                    LoadData();
+                    try
+                    {
+                        JArray results = await api.SearchEnterpriseBySiren(tb_Search.Text);
+
+
+
+                        allEnterprisesEtab = JsonConvert.DeserializeObject<List<EntrepriseEtablissement>>(results.ToString());
+
+                        detailsEntreprise DE = new detailsEntreprise(allEnterprisesEtab);
+                        DE.Show();
+
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Erreur lors de la requête à l'API : " + ex.Message);
+                    }
+
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show("Erreur lors de la requête à l'API : " + ex.Message);
+
+                    try
+                    {
+                        JArray results = await api.SearchEnterprise(RemoveAccents(tb_Search.Text));
+                        allEnterprises = JsonConvert.DeserializeObject<List<Entreprise>>(results.ToString());
+
+
+                        totalResults = allEnterprises.Count;
+                        CalculatePages();
+                        LoadData();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Erreur lors de la requête à l'API : " + ex.Message);
+                    }
                 }
             }
             else
@@ -99,7 +131,7 @@ namespace SwiftInsightsV2
 
         private async void tb_Search_KeyPress(object sender, KeyPressEventArgs e)
         {
-           
+
         }
 
         private void CalculatePages()
@@ -117,6 +149,48 @@ namespace SwiftInsightsV2
             {
                 pb_Search_Click(sender, e);
             }
+        }
+
+        private async void advDGV_Search_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Api api = new Api();
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                string siren = advDGV_Search.Rows[e.RowIndex].Cells["Siren"].Value.ToString();
+
+                // Récupérer tous les établissements de l'entreprise correspondant au numéro de Siren
+                JArray results = await api.SearchEnterpriseBySiren(siren);
+                List<EntrepriseEtablissement> allEnterprisesEtab = JsonConvert.DeserializeObject<List<EntrepriseEtablissement>>(results.ToString());
+
+                // Afficher une boîte de dialogue modale avec une liste déroulante pour sélectionner l'établissement
+                using (var dialog = new SelectEtablissementDialog(allEnterprisesEtab))
+                {
+                    if (dialog.ShowDialog() == DialogResult.OK)
+                    {
+                        // L'utilisateur a sélectionné un établissement, afficher les détails de l'entreprise
+                        detailsEntreprise DE = new detailsEntreprise(dialog.SelectedEtablissement);
+                             DE.Show();
+                    }
+                }
+            }
+        }
+
+        public static string RemoveAccents(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return input;
+
+            string normalizedString = input.Normalize(NormalizationForm.FormD);
+            StringBuilder stringBuilder = new StringBuilder();
+
+            foreach (char c in normalizedString)
+            {
+                UnicodeCategory unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                    stringBuilder.Append(c);
+            }
+
+            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
     }
 }

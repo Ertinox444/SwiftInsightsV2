@@ -205,6 +205,7 @@
             advDGV_Search.RowTemplate.Resizable = DataGridViewTriState.False;
             advDGV_Search.Size = new Size(1556, 812);
             advDGV_Search.TabIndex = 9;
+            advDGV_Search.CellDoubleClick += advDGV_Search_CellDoubleClick;
             // 
             // label2
             // 

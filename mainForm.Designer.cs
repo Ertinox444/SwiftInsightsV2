@@ -98,6 +98,7 @@
             btn_Create.TabIndex = 1;
             btn_Create.Text = "CREER";
             btn_Create.UseVisualStyleBackColor = false;
+            btn_Create.Visible = false;
             btn_Create.Click += btn_Create_Click;
             // 
             // btn_Logout
