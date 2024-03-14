@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="DevExpress.Data" Version="23.2.5-pre-24066" />
     <PackageReference Include="DG.AdvancedDataGridView" Version="1.2.29016.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />

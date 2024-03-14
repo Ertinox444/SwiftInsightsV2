@@ -1,10 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SwiftInsightsV2.Controller
@@ -15,7 +13,7 @@ namespace SwiftInsightsV2.Controller
 
         public Api()
         {
-           
+
         }
 
         public async Task<JArray> SearchEnterprise(string searchTerm)
@@ -45,5 +43,31 @@ namespace SwiftInsightsV2.Controller
             }
         }
 
+        public async Task<JArray> SearchEnterpriseBySiren(string siren)
+        {
+            if (string.IsNullOrWhiteSpace(siren))
+                throw new ArgumentException("Le numéro de SIREN ne peut pas être vide.");
+
+            string url = $"https://api.societe.com/api/v1/entreprise/{siren}"+"/etablissements?token="+_token;
+
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+
+                var response = await client.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    dynamic jsonObject = JsonConvert.DeserializeObject(content);
+
+                    return jsonObject.data.results;
+                }
+                else
+                {
+                    throw new Exception("Erreur lors de la requête à l'API : " + response.StatusCode);
+                }
+            }
+        }
     }
 }

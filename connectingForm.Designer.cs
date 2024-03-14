@@ -205,6 +205,7 @@
             Controls.Add(panel1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "connectingForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Portail Connexion - Swift Insights";
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
