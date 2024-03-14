@@ -33,6 +33,8 @@ namespace SwiftInsightsV2
             {
                 Api api = new Api();
 
+                //Condition si texte ou numéro particulier
+
                 if ((tb_Search.Text.Length == 14 || tb_Search.Text.Length == 9) && tb_Search.Text.All(char.IsDigit))
                 {
                     try
@@ -43,8 +45,16 @@ namespace SwiftInsightsV2
 
                         allEnterprisesEtab = JsonConvert.DeserializeObject<List<EntrepriseEtablissement>>(results.ToString());
 
-                        detailsEntreprise DE = new detailsEntreprise(allEnterprisesEtab);
-                        DE.Show();
+                        // Afficher une boîte de dialogue modale avec une liste déroulante pour sélectionner l'établissement
+                        using (var dialog = new SelectEtablissementDialog(allEnterprisesEtab))
+                        {
+                            if (dialog.ShowDialog() == DialogResult.OK)
+                            {
+                                // L'utilisateur a sélectionné un établissement, afficher les détails de l'entreprise
+                                detailsEntreprise DE = new detailsEntreprise(dialog.SelectedEtablissement);
+                                DE.Show();
+                            }
+                        }
 
 
 
@@ -80,6 +90,7 @@ namespace SwiftInsightsV2
             }
         }
 
+        
         private void resultNumber_PerPage_ValueChanged(object sender, EventArgs e)
         {
             pageSize = (int)resultNumber_PerPage.Value;
@@ -104,7 +115,7 @@ namespace SwiftInsightsV2
                 LoadData();
             }
         }
-
+        //Fonction calcul les paginations et charge les données en fonction du nombre de résultats, le nombre d'affichage souhaité
         private void LoadData()
         {
             // Calculer l'index de début et de fin pour la page actuelle
@@ -134,6 +145,7 @@ namespace SwiftInsightsV2
 
         }
 
+        //Fonction calcul pages
         private void CalculatePages()
         {
             totalPages = (int)Math.Ceiling((double)totalResults / pageSize);

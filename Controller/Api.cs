@@ -16,6 +16,7 @@ namespace SwiftInsightsV2.Controller
 
         }
 
+        //Fonction de recherche d'entreprise par nom
         public async Task<JArray> SearchEnterprise(string searchTerm)
         {
             if (string.IsNullOrWhiteSpace(searchTerm))
@@ -42,7 +43,7 @@ namespace SwiftInsightsV2.Controller
                 }
             }
         }
-
+        //Fonction de recherche d'entreprise par Siren ou Siret
         public async Task<JArray> SearchEnterpriseBySiren(string siret)
         {
             if (string.IsNullOrWhiteSpace(siret))

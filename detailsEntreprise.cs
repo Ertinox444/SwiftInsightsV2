@@ -24,7 +24,7 @@ namespace SwiftInsightsV2
 
 
         }
-
+        //Permet de définir les champs avec les bonnes données
         public detailsEntreprise(EntrepriseEtablissement selectedEtablissement)
         {
             InitializeComponent();

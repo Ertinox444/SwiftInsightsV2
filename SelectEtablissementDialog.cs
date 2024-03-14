@@ -29,6 +29,7 @@ namespace SwiftInsightsV2
             labelInstructions.Text = "Veuillez choisir un des établissements de l'entreprise - " + etablissements[0].Deno + "(N° Siret)";
         }
 
+        //Création de la fenêtre
         private void InitializeComponent2()
         {
             this.comboBoxEtablissements = new ComboBox();
@@ -75,7 +76,7 @@ namespace SwiftInsightsV2
 
 
 
-
+        //Chargement dans la combo box des établissements
         private void LoadEtablissements()
         {
             foreach (var etab in etablissements)
@@ -88,7 +89,7 @@ namespace SwiftInsightsV2
                 comboBoxEtablissements.SelectedIndex = 0;
             }
         }
-
+        //Envoie vers la page de détail l'établissement choisi
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             if (DialogResult == DialogResult.OK)
